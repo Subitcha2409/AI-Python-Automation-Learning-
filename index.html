@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Growth Tracker</title>
+    <title>Technical Learning Plan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <style>
@@ -33,8 +33,8 @@
 
         <!-- Header and Overall Progress Dashboard -->
         <header class="text-center mb-12 bg-white p-8 shadow-xl rounded-xl">
-            <h1 class="text-4xl font-extrabold text-blue-800 tracking-tight mb-2">Technical Growth Tracker</h1>
-            <p class="text-lg text-gray-600">Visualize your path to expertise in Automation and Applied AI.</p>
+            <h1 class="text-4xl font-extrabold text-blue-800 tracking-tight mb-2">6-Month Technical Learning Plan</h1>
+            <p class="text-lg text-gray-600">Structured roadmap to achieve expertise in Automation and Applied AI.</p>
         </header>
 
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -70,7 +70,7 @@
                 <p class="text-sm text-gray-500 mt-1"><span id="module-progress-text">0%</span> Complete</p>
             </div>
 
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Focus Areas & Practical Projects</h3>
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Sequential Learning & Final Project</h3>
             
             <!-- Focus Areas Checklist -->
             <div id="focus-areas-checklist" class="space-y-4">
@@ -93,10 +93,20 @@
                 weeks: 'Weeks 1-8',
                 goal: 'Establish deep, production-ready Python programming mastery for contributing effectively to AI and agent-based initiatives.',
                 focusAreas: [
-                    { title: 'Core Mastery', concepts: 'Type Hinting (Mypy), Context Managers (`with`), Decorators, Generators, Advanced List/Dictionary Comprehensions.', project: 'Refactor existing E2E Agent Python code to use modern type hinting and context managers for cleaner resource handling.' },
-                    { title: 'Concurrency & Async', concepts: '`asyncio` fundamentals, `async`/`await` syntax, `concurrent.futures` for thread/process pooling.', project: 'Write a Python script that uses `asyncio` to concurrently fetch data from multiple REST API endpoints (simulating test data fetching).' },
-                    { title: 'Data Structures & Libraries', concepts: 'Effective use of Pandas (DataFrames for processing test data), NumPy (vectorized operations), efficient file I/O (JSON/CSV).', project: 'Use Pandas to analyze Playwright test reports (JSON format) to identify the slowest and flakiest tests.' },
-                    { title: 'Packaging & Environment', concepts: 'Poetry or Pipenv for dependency management, virtual environments, creating reusable Python packages for your E2E Agents.', project: 'Create a modular Python package containing the E2E Agent logic, ready to be imported by other services.' }
+                    { title: 'Learn Type Hinting (Mypy) for robust code.' },
+                    { title: 'Master Context Managers (`with` statement) for clean resource handling.' },
+                    { title: 'Implement Decorators and custom function wrappers.' },
+                    { title: 'Utilize Generators and Iterators for memory efficiency.' },
+                    { title: 'Master Advanced List/Dictionary/Set Comprehensions.' },
+                    { title: 'Understand `asyncio` fundamentals.' },
+                    { title: 'Implement `async`/`await` for I/O bound tasks.' },
+                    { title: 'Explore `concurrent.futures` for thread/process pooling.' },
+                    { title: 'Learn Effective use of Pandas (DataFrames).' },
+                    { title: 'Implement NumPy for vectorized operations.' },
+                    { title: 'Practice efficient file I/O (JSON/CSV).' },
+                    { title: 'Set up Poetry or Pipenv for dependency management.' },
+                    { title: 'Practice creating reusable Python packages.' },
+                    { title: 'FINAL PROJECT: Refactor existing E2E Agent Python code using modern types and context managers.' }
                 ]
             },
             'playwright': {
@@ -107,10 +117,14 @@
                 weeks: 'Weeks 9-16',
                 goal: 'Implement a high-efficiency Playwright architecture and engineer seamless integration with Python E2E Agents.',
                 focusAreas: [
-                    { title: 'Test Optimization', concepts: 'Actionability Checks (avoiding unnecessary waits), `expect.poll` for reliable UI state verification, custom wait functions tailored to application behavior.', project: 'Identify and refactor the five slowest Playwright tests, replacing generic waits with specific `expect.poll` or network waits.' },
-                    { title: 'Parallelization & Sharding', concepts: 'Playwright CLI parameters for sharding (splitting tests across multiple CI workers), custom reporting using JUnit or Allure for parallel runs.', project: 'Configure a local environment to run tests in parallel across four worker threads. Document the setup for sharding in your CI pipeline.' },
-                    { title: "'One-Click' Data Integration", concepts: "Using Playwright's `request` fixture for making direct API calls (e.g., to create prerequisite data) before interacting with the UI.", project: "Primary Project: Build the 'One-Click' Data & Test Execution prototype: a single Playwright test that calls the Python E2E Agent (via an internal API or wrapper function) to create test data, confirms the data via a quick API check, and then executes the UI validation." },
-                    { title: 'Custom Reporters', concepts: 'Building simple custom reporters to extract specific data, like test run metadata, for analysis by Python scripts.', project: 'Create a basic custom reporter that outputs a concise summary of failed tests directly to the console.' }
+                    { title: 'Master Actionability Checks (eliminating unnecessary waits).' },
+                    { title: 'Implement `expect.poll` for reliable UI state verification.' },
+                    { title: 'Develop custom wait functions tailored to application behavior.' },
+                    { title: 'Understand Playwright CLI parameters for test sharding.' },
+                    { title: 'Configure custom reporting (JUnit or Allure) for parallel runs.' },
+                    { title: 'Use Playwright\'s `request` fixture for pre-test API calls (data creation).' },
+                    { title: 'Build simple custom reporters to extract test run metadata.' },
+                    { title: 'FINAL PROJECT: Build the "One-Click" Data & Test Execution prototype integrated with the E2E Python Agent.' }
                 ]
             },
             'ai': {
@@ -119,12 +133,21 @@
                 icon: '🧠',
                 color: 'bg-indigo-600',
                 weeks: 'Weeks 17-24',
-                goal: 'Collaborate with the Applied AI team to implement and optimize LLM-driven solutions for testing.',
+                goal: 'Collaborate with the the team to implement and optimize LLM-driven solutions for testing.',
                 focusAreas: [
-                    { title: 'LLM Fundamentals & Prompt Engineering', concepts: 'Understanding generative models, Retrieval-Augmented Generation (RAG) basics, structured prompting (JSON output).', project: 'Develop a structured prompt to feed into an LLM, including code snippets and requirements, and prompt it to generate a JSON array of comprehensive test cases.' },
-                    { title: 'LLM Optimization Techniques', concepts: 'Quantization (reducing model size/latency), Efficient Fine-Tuning (PEFT/LoRA), token management, evaluating cost-efficiency.', project: 'Collaboration: Work with the Applied AI team to understand their current LLM inference pipeline. Identify one area where performance can be measured and improved.' },
-                    { title: 'AI-Driven Test Plan Generation', concepts: 'Utilizing LLMs for code summarization and defect pattern analysis.', project: 'Feed the LLM snippets of newly developed application code and ask it to suggest high-risk areas and functional test scenarios.' },
-                    { title: 'AIaaS and Automation', concepts: 'Understanding the value proposition of external AI services for testing: Visual Regression tools, cloud-based anomaly detection, synthetic data generation.', project: 'Investigation: Research and document three external AIaaS tools that could potentially integrate with our Playwright/Python stack to solve current testing bottlenecks.' }
+                    { title: 'Understand LLM Fundamentals and Generative Models.' },
+                    { title: 'Learn Retrieval-Augmented Generation (RAG) basics.' },
+                    { title: 'Practice Structured Prompting (generating JSON output).' },
+                    { title: 'Study Quantization techniques for latency reduction.' },
+                    { title: 'Explore Efficient Fine-Tuning methods (PEFT/LoRA).' },
+                    { title: 'Learn Token Management and its cost implications.' },
+                    { title: 'Evaluate LLM cost-efficiency and performance metrics.' },
+                    { title: 'Utilize LLMs for code summarization for test planning.' },
+                    { title: 'Apply LLMs for defect pattern analysis.' },
+                    { title: 'Research Visual Regression tools (AIaaS).' },
+                    { title: 'Research cloud-based anomaly detection (AIaaS).' },
+                    { title: 'Research synthetic data generation services (AIaaS).' },
+                    { title: 'FINAL PROJECT: Collaborate with Applied AI team to measure and improve LLM inference performance.' }
                 ]
             }
         };
@@ -231,19 +254,23 @@
                 
                 return `
                     <button onclick="showModuleDetail('${moduleId}')" class="text-left p-6 shadow-lg rounded-xl transition duration-300 transform hover:scale-[1.02] ${isComplete ? 'bg-green-50 border-2 border-green-400' : 'bg-white border border-gray-200'}">
-                        <div class="flex items-center space-x-4 mb-3">
-                            <span class="text-3xl">${module.icon}</span>
+                        <div class="flex justify-between items-start mb-3">
                             <h3 class="text-xl font-bold text-gray-800">${module.name}</h3>
+                            <span class="text-3xl">${module.icon}</span>
                         </div>
-                        <p class="text-sm text-gray-500 mb-4">${module.goal.substring(0, 85)}...</p>
                         
-                        <!-- Progress Bar -->
+                        <p class="text-sm font-semibold text-blue-600 mb-2 border-b border-blue-100 pb-1">${module.weeks} - Target Period</p>
+
+                        <p class="text-sm text-gray-700 mb-4 italic">${module.goal.substring(0, 100)}...</p>
+                        
+                        <!-- Progress/Timeline Indicator -->
+                        <p class="text-xs text-gray-600 font-medium mb-1">Status: ${progress}% Complete</p>
                         <div class="mb-1">
                             <div class="w-full bg-gray-200 rounded-full progress-bar">
                                 <div class="progress-bar ${isComplete ? 'bg-green-500' : 'bg-blue-600'}" style="width: ${progress}%"></div>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-600 font-medium mt-2">${progress}% Complete (${trackerState[moduleId].filter(c => c).length}/${module.focusAreas.length} items)</p>
+                        
                     </button>
                 `;
             }).join('');
@@ -272,14 +299,14 @@
 
             focusList.innerHTML = module.focusAreas.map((area, index) => {
                 const isChecked = trackerState[moduleId][index];
+                const isProject = area.title.startsWith('FINAL PROJECT:');
+                
                 return `
-                    <label class="block p-4 rounded-lg cursor-pointer transition duration-150 ${isChecked ? 'bg-green-50 border-l-4 border-green-500 shadow-sm' : 'bg-white border border-gray-100 hover:bg-gray-50'}">
+                    <label class="block p-4 rounded-lg cursor-pointer transition duration-150 ${isChecked ? 'bg-green-50 border-l-4 border-green-500 shadow-sm' : isProject ? 'bg-blue-50 border-l-4 border-blue-500 shadow-md' : 'bg-white border border-gray-100 hover:bg-gray-50'}">
                         <div class="flex items-start">
-                            <input type="checkbox" onchange="handleCheck('${moduleId}', ${index})" ${isChecked ? 'checked' : ''} class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <input type="checkbox" onchange="handleCheck('${moduleId}', ${index})" ${isChecked ? 'checked' : ''} class="w-5 h-5 mt-1 ${isProject ? 'text-blue-700' : 'text-blue-600'} bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <div class="ml-4 w-full">
-                                <h4 class="text-lg font-semibold ${isChecked ? 'text-green-700 line-through' : 'text-gray-900'}">${area.title}</h4>
-                                <p class="text-sm text-gray-600 mt-1">${area.concepts}</p>
-                                <p class="text-xs font-medium text-blue-500 mt-2">PROJECT: ${area.project}</p>
+                                <h4 class="text-lg font-semibold ${isChecked ? 'text-green-700 line-through' : isProject ? 'text-blue-800' : 'text-gray-900'}">${area.title}</h4>
                             </div>
                         </div>
                     </label>
