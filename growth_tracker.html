@@ -1,0 +1,312 @@
+<!-- Chosen Palette: Calm Harmony (Base: white/gray-50, Primary: blue-600, Success: green-500) -->
+<!-- Application Structure Plan: The SPA uses a two-part structure: 1) A centralized Dashboard Header showing overall progress with a large Doughnut Chart (for immediate impact and synthesis), and 2) A dynamic Content View that uses tabs/buttons to switch between detailed checklists for the three modules (Python, Playwright, AI). This structure was chosen for usability because it prioritizes high-level tracking first and offers easy drill-down without unnecessary scrolling, ensuring all complex content is accessible in a clean, focused view. -->
+<!-- Visualization & Content Choices: The main progress is visualized with a Chart.js Doughnut Chart (Report Info -> Overall Progress -> Viz/Presentation Method -> Interaction -> Justification -> Library/Method - Confirming NO SVG/Mermaid). Module details are presented as interactive checklists (Textual Content -> Focus Areas/Concepts -> HTML/Tailwind Checklist -> Click to track progress -> High interactivity, clear state management). Progress bars (HTML/CSS) are used for module-specific progress. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Growth Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 350px;
+            padding: 1rem;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen">
+
+    <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- Header and Overall Progress Dashboard -->
+        <header class="text-center mb-12 bg-white p-8 shadow-xl rounded-xl">
+            <h1 class="text-4xl font-extrabold text-blue-800 tracking-tight mb-2">Technical Growth Tracker</h1>
+            <p class="text-lg text-gray-600">Visualize your path to expertise in Automation and Applied AI.</p>
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            
+            <!-- Overall Progress Chart -->
+            <div class="lg:col-span-1 bg-white p-6 shadow-xl rounded-xl flex flex-col justify-center">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Overall Curriculum Progress</h2>
+                <div class="chart-container">
+                    <canvas id="overallProgressChart"></canvas>
+                </div>
+                <div class="text-center mt-4">
+                    <p class="text-sm text-gray-500">Total Progress Across All Modules</p>
+                </div>
+            </div>
+
+            <!-- Module Selection Cards -->
+            <div id="module-cards-container" class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Module cards will be injected here -->
+            </div>
+        </section>
+
+        <!-- Module Detail View -->
+        <section id="module-detail-section" class="mt-12 bg-white p-6 shadow-2xl rounded-xl hidden">
+            <h2 id="module-detail-title" class="text-3xl font-bold text-blue-700 mb-2"></h2>
+            <p id="module-detail-weeks" class="text-sm text-gray-500 mb-4"></p>
+            <p id="module-detail-goal" class="text-gray-700 italic mb-6"></p>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Module Completion Status</h3>
+                <div class="w-full bg-gray-200 rounded-full progress-bar-container">
+                    <div id="module-progress-bar" class="progress-bar bg-green-500" style="width: 0%"></div>
+                </div>
+                <p class="text-sm text-gray-500 mt-1"><span id="module-progress-text">0%</span> Complete</p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Focus Areas & Practical Projects</h3>
+            
+            <!-- Focus Areas Checklist -->
+            <div id="focus-areas-checklist" class="space-y-4">
+                <!-- Checklist items will be injected here -->
+            </div>
+            <button onclick="hideModuleDetail()" class="mt-8 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-150">
+                &larr; Back to Dashboard
+            </button>
+        </section>
+
+    </div>
+
+    <script>
+        const CURRICULUM_DATA = {
+            'python': {
+                id: 'python',
+                name: 'Module 1: Deep Python Proficiency',
+                icon: '🐍',
+                color: 'bg-green-600',
+                weeks: 'Weeks 1-8',
+                goal: 'Establish deep, production-ready Python programming mastery for contributing effectively to AI and agent-based initiatives.',
+                focusAreas: [
+                    { title: 'Core Mastery', concepts: 'Type Hinting (Mypy), Context Managers (`with`), Decorators, Generators, Advanced List/Dictionary Comprehensions.', project: 'Refactor existing E2E Agent Python code to use modern type hinting and context managers for cleaner resource handling.' },
+                    { title: 'Concurrency & Async', concepts: '`asyncio` fundamentals, `async`/`await` syntax, `concurrent.futures` for thread/process pooling.', project: 'Write a Python script that uses `asyncio` to concurrently fetch data from multiple REST API endpoints (simulating test data fetching).' },
+                    { title: 'Data Structures & Libraries', concepts: 'Effective use of Pandas (DataFrames for processing test data), NumPy (vectorized operations), efficient file I/O (JSON/CSV).', project: 'Use Pandas to analyze Playwright test reports (JSON format) to identify the slowest and flakiest tests.' },
+                    { title: 'Packaging & Environment', concepts: 'Poetry or Pipenv for dependency management, virtual environments, creating reusable Python packages for your E2E Agents.', project: 'Create a modular Python package containing the E2E Agent logic, ready to be imported by other services.' }
+                ]
+            },
+            'playwright': {
+                id: 'playwright',
+                name: 'Module 2: Advanced Playwright Automation & Integration',
+                icon: '🚀',
+                color: 'bg-blue-600',
+                weeks: 'Weeks 9-16',
+                goal: 'Implement a high-efficiency Playwright architecture and engineer seamless integration with Python E2E Agents.',
+                focusAreas: [
+                    { title: 'Test Optimization', concepts: 'Actionability Checks (avoiding unnecessary waits), `expect.poll` for reliable UI state verification, custom wait functions tailored to application behavior.', project: 'Identify and refactor the five slowest Playwright tests, replacing generic waits with specific `expect.poll` or network waits.' },
+                    { title: 'Parallelization & Sharding', concepts: 'Playwright CLI parameters for sharding (splitting tests across multiple CI workers), custom reporting using JUnit or Allure for parallel runs.', project: 'Configure a local environment to run tests in parallel across four worker threads. Document the setup for sharding in your CI pipeline.' },
+                    { title: "'One-Click' Data Integration", concepts: "Using Playwright's `request` fixture for making direct API calls (e.g., to create prerequisite data) before interacting with the UI.", project: "Primary Project: Build the 'One-Click' Data & Test Execution prototype: a single Playwright test that calls the Python E2E Agent (via an internal API or wrapper function) to create test data, confirms the data via a quick API check, and then executes the UI validation." },
+                    { title: 'Custom Reporters', concepts: 'Building simple custom reporters to extract specific data, like test run metadata, for analysis by Python scripts.', project: 'Create a basic custom reporter that outputs a concise summary of failed tests directly to the console.' }
+                ]
+            },
+            'ai': {
+                id: 'ai',
+                name: 'Module 3: Applied AI for Test Strategy',
+                icon: '🧠',
+                color: 'bg-indigo-600',
+                weeks: 'Weeks 17-24',
+                goal: 'Collaborate with the Applied AI team to implement and optimize LLM-driven solutions for testing.',
+                focusAreas: [
+                    { title: 'LLM Fundamentals & Prompt Engineering', concepts: 'Understanding generative models, Retrieval-Augmented Generation (RAG) basics, structured prompting (JSON output).', project: 'Develop a structured prompt to feed into an LLM, including code snippets and requirements, and prompt it to generate a JSON array of comprehensive test cases.' },
+                    { title: 'LLM Optimization Techniques', concepts: 'Quantization (reducing model size/latency), Efficient Fine-Tuning (PEFT/LoRA), token management, evaluating cost-efficiency.', project: 'Collaboration: Work with the Applied AI team to understand their current LLM inference pipeline. Identify one area where performance can be measured and improved.' },
+                    { title: 'AI-Driven Test Plan Generation', concepts: 'Utilizing LLMs for code summarization and defect pattern analysis.', project: 'Feed the LLM snippets of newly developed application code and ask it to suggest high-risk areas and functional test scenarios.' },
+                    { title: 'AIaaS and Automation', concepts: 'Understanding the value proposition of external AI services for testing: Visual Regression tools, cloud-based anomaly detection, synthetic data generation.', project: 'Investigation: Research and document three external AIaaS tools that could potentially integrate with our Playwright/Python stack to solve current testing bottlenecks.' }
+                ]
+            }
+        };
+
+        const STORAGE_KEY = 'growthTrackerState';
+        let trackerState = {};
+        let overallChart = null;
+        let totalItems = 0;
+        let completedItems = 0;
+
+        function loadState() {
+            const savedState = localStorage.getItem(STORAGE_KEY);
+            if (savedState) {
+                trackerState = JSON.parse(savedState);
+            } else {
+                // Initialize state based on curriculum structure
+                Object.keys(CURRICULUM_DATA).forEach(moduleId => {
+                    const module = CURRICULUM_DATA[moduleId];
+                    trackerState[moduleId] = Array(module.focusAreas.length).fill(false);
+                });
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerState));
+        }
+
+        function calculateProgress() {
+            totalItems = 0;
+            completedItems = 0;
+            Object.keys(CURRICULUM_DATA).forEach(moduleId => {
+                const module = CURRICULUM_DATA[moduleId];
+                totalItems += module.focusAreas.length;
+                completedItems += trackerState[moduleId].filter(isComplete => isComplete).length;
+            });
+            return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+        }
+
+        function getModuleProgress(moduleId) {
+            const completed = trackerState[moduleId].filter(isComplete => isComplete).length;
+            const total = CURRICULUM_DATA[moduleId].focusAreas.length;
+            return total > 0 ? Math.round((completed / total) * 100) : 0;
+        }
+
+        function handleCheck(moduleId, index) {
+            trackerState[moduleId][index] = !trackerState[moduleId][index];
+            saveState();
+            renderDashboard();
+            renderModule(moduleId); // Re-render detail view to update progress bar
+        }
+
+        function renderDashboard() {
+            const overallProgress = calculateProgress();
+            
+            // 1. Render Overall Chart
+            if (overallChart) {
+                overallChart.data.datasets[0].data = [completedItems, totalItems - completedItems];
+                overallChart.update();
+            } else {
+                const ctx = document.getElementById('overallProgressChart').getContext('2d');
+                overallChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed', 'Remaining'],
+                        datasets: [{
+                            data: [completedItems, totalItems - completedItems],
+                            backgroundColor: ['#10B981', '#E5E7EB'], // green-500, gray-200
+                            hoverBackgroundColor: ['#059669', '#D1D5DB'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '80%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: true }
+                        }
+                    }
+                });
+            }
+
+            // Inject center text (manual overlay or plugin is complex, let's use a standard pattern)
+            const chartContainer = document.querySelector('.chart-container');
+            let centerText = chartContainer.querySelector('.chart-center-text');
+            if (!centerText) {
+                centerText = document.createElement('div');
+                centerText.className = 'chart-center-text absolute inset-0 flex flex-col justify-center items-center pointer-events-none';
+                chartContainer.appendChild(centerText);
+            }
+            centerText.innerHTML = `
+                <span class="text-4xl font-extrabold text-blue-600">${overallProgress}%</span>
+                <span class="text-xs text-gray-500 font-medium uppercase">Total Progress</span>
+            `;
+
+
+            // 2. Render Module Cards
+            const container = document.getElementById('module-cards-container');
+            container.innerHTML = Object.keys(CURRICULUM_DATA).map(moduleId => {
+                const module = CURRICULUM_DATA[moduleId];
+                const progress = getModuleProgress(moduleId);
+                const isComplete = progress === 100;
+                
+                return `
+                    <button onclick="showModuleDetail('${moduleId}')" class="text-left p-6 shadow-lg rounded-xl transition duration-300 transform hover:scale-[1.02] ${isComplete ? 'bg-green-50 border-2 border-green-400' : 'bg-white border border-gray-200'}">
+                        <div class="flex items-center space-x-4 mb-3">
+                            <span class="text-3xl">${module.icon}</span>
+                            <h3 class="text-xl font-bold text-gray-800">${module.name}</h3>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4">${module.goal.substring(0, 85)}...</p>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-1">
+                            <div class="w-full bg-gray-200 rounded-full progress-bar">
+                                <div class="progress-bar ${isComplete ? 'bg-green-500' : 'bg-blue-600'}" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 font-medium mt-2">${progress}% Complete (${trackerState[moduleId].filter(c => c).length}/${module.focusAreas.length} items)</p>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function showModuleDetail(moduleId) {
+            document.querySelector('section').scrollIntoView({ behavior: 'smooth' }); // Scroll to top
+            renderModule(moduleId);
+        }
+
+        function renderModule(moduleId) {
+            const module = CURRICULUM_DATA[moduleId];
+            const detailSection = document.getElementById('module-detail-section');
+            const focusList = document.getElementById('focus-areas-checklist');
+            const progress = getModuleProgress(moduleId);
+            const isComplete = progress === 100;
+
+            document.getElementById('module-detail-title').textContent = module.name;
+            document.getElementById('module-detail-weeks').textContent = module.weeks;
+            document.getElementById('module-detail-goal').textContent = module.goal;
+            document.getElementById('module-progress-text').textContent = progress;
+
+            document.getElementById('module-progress-bar').style.width = `${progress}%`;
+            document.getElementById('module-progress-bar').classList.toggle('bg-green-500', isComplete);
+            document.getElementById('module-progress-bar').classList.toggle('bg-blue-600', !isComplete);
+
+            focusList.innerHTML = module.focusAreas.map((area, index) => {
+                const isChecked = trackerState[moduleId][index];
+                return `
+                    <label class="block p-4 rounded-lg cursor-pointer transition duration-150 ${isChecked ? 'bg-green-50 border-l-4 border-green-500 shadow-sm' : 'bg-white border border-gray-100 hover:bg-gray-50'}">
+                        <div class="flex items-start">
+                            <input type="checkbox" onchange="handleCheck('${moduleId}', ${index})" ${isChecked ? 'checked' : ''} class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <div class="ml-4 w-full">
+                                <h4 class="text-lg font-semibold ${isChecked ? 'text-green-700 line-through' : 'text-gray-900'}">${area.title}</h4>
+                                <p class="text-sm text-gray-600 mt-1">${area.concepts}</p>
+                                <p class="text-xs font-medium text-blue-500 mt-2">PROJECT: ${area.project}</p>
+                            </div>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            detailSection.classList.remove('hidden');
+        }
+
+        function hideModuleDetail() {
+            document.getElementById('module-detail-section').classList.add('hidden');
+        }
+
+        function init() {
+            loadState();
+            renderDashboard();
+
+            // Render module cards container
+            const moduleCardsContainer = document.getElementById('module-cards-container');
+            if (Object.keys(CURRICULUM_DATA).length > 0) {
+                // Initial render of cards happens in renderDashboard()
+            } else {
+                moduleCardsContainer.innerHTML = '<p class="col-span-3 text-center text-gray-500">Curriculum data not loaded.</p>';
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
